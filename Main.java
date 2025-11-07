@@ -6,80 +6,38 @@ import net.objecthunter.exp4j.*;
 public class Main {
  static Thread input_listener = new Thread() {
     public void run() {
-      Scanner scanner = new Scanner(System.in);
-      while (true) {
-        String input = scanner.findWithinHorizon("w",1);
-        if (input != null) {
-          if (input.equals("w")) {
-            re.myo(1);
-            System.out.print("\33[2k");
-            re.calc();
-            //scanner.close();
-            continue;
-          };
-        } else {
-          System.out.print("\33[2k");
-        };
-          
-        input = scanner.findWithinHorizon("s",1);
-        if (input != null) {
-          if (input.equals("s")) {
-            re.myo(-1);
-            System.out.print("\33[2k");
-            re.calc();
-            //scanner.close();
-            continue;
-          }
-        } else {
-          System.out.print("\33[2k");
-        };
-        
-        input = scanner.findWithinHorizon("a",1);
-        if (input != null) {
-          if (input.equals("a")) {
-            re.mxo(-1);
-            System.out.print("\33[2k");
-            re.calc();
-            //scanner.close();
-            continue;
-          };
-        } else {
-          System.out.print("\33[2k");
-        };
-        
-        input = scanner.findWithinHorizon("d",1);
-        if (input != null) {
-          if (input.equals("d")) {
-            re.mxo(1);
-            System.out.print("\33[2k");
-            re.calc();
-            //scanner.close();
-            continue;
-          };
-        } else {
-          System.out.print("\33[2k");
-        };
 
-        input = scanner.findWithinHorizon("f",1);
-        if (input != null) {
-          if (input.equals("f")) {
-            re.mzo(-1);
-            System.out.print("\33[2k");
-            re.calc();
-            //scanner.close();
-            continue;
-          };
-        };
+        //the key inputs. 
+        //pretty much just reads the console and clears it when a key is pressed.
+        //only works w/o hitting enter cause of the stty thing on line 49
+        //not compatible with windows or some linux distros yet afaik
 
-        input = scanner.findWithinHorizon("g",1);
+        //todo: learn about regex
+        Scanner scanner = new Scanner(System.in);
+        while (true) {
+        String input = scanner.findWithinHorizon("[wasd]",1);
         if (input != null) {
-          if (input.equals("g")) {
-            re.mzo(1);
+            if (input.equals("w")) {
+                //have to cast to byte cause it defaults to int ig
+                re.myo((byte)1);
+            };
+            if (input.equals("a")) {
+                re.mxo((byte)-1);
+            };
+            if (input.equals("s")) {
+                re.myo((byte)-1);
+            };
+            if (input.equals("d")) {
+                re.mxo((byte)1);
+            };
             System.out.print("\33[2k");
+            //calling calculator function to recalculate stuff after moving camera
+            //calc function calls draw function
             re.calc();
-            //scanner.close();
             continue;
-          };
+        } else {
+            //33[2k clears whole line
+            System.out.print("\33[2k");
         };
       }
     };
@@ -91,46 +49,33 @@ public class Main {
   public static void main(String[] args) {
     argument = args[0];
     try {
-      // only works for linux
-      // todo: add compat for windows
-      ProcessBuilder pb = new ProcessBuilder("stty","-icanon","-iuclc");
-      pb.inheritIO();
-      pb.redirectErrorStream(true);
-      Process process = pb.start();
-      process.waitFor();
+        // -only works for linux
+        // -todo: add compat for windows, mac, and prolly other linux distros
+
+        //-stty is the command to change settings
+        //-icanon turns off canonical terminal meaning
+        // you dont gotta hit enter for it to read the console
+        //-iuclc converts uppercase to lowercase
+        //for more do stty --help
+        //gracias stack overflow
+
+        ProcessBuilder pb = new ProcessBuilder("stty","-icanon","-iuclc");
+        pb.inheritIO();
+        pb.redirectErrorStream(true);
+        Process process = pb.start();
+        process.waitFor();
 
     } catch (IOException e) {
-      // Handle exceptions, e.g. print an error message
-      e.printStackTrace();
+        // Handle exceptions, e.g. print an error message
+        e.printStackTrace();
     }  catch (InterruptedException e) {
-    e.printStackTrace();
+        e.printStackTrace();
     }
-    input_listener.start();
-    re.calc();
-    
-
-    
-    
-
-    
-    
-
-    
-
-    
-
-    
-
-
-    
-
+        input_listener.start();
+        re.calc();
   };
 
   public static String getFunc() {
     return argument;
   }
 };
-
-
-//ignbrk brkint ignpar parmrk inpck istrip inlcr igncr
-//icrnl ixon ixoff icanon opost isig iuclc ixany imaxbel xcase min 1 time 0

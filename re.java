@@ -5,7 +5,6 @@ import net.objecthunter.exp4j.*;
 
 
 public class re {
-
   static int boundX = 72;
   static int boundY = 72;
   static int x_offset = boundX/2;
@@ -15,15 +14,15 @@ public class re {
 
   static boolean[][] pos = new boolean[boundY+1][boundX+1];
 
-  public synchronized static void mxo(int num) {
+  public synchronized static void mxo(byte num) {
     x_offset+=num;
   };
 
-  public synchronized static void myo(int num) {
+  public synchronized static void myo(byte num) {
     y_offset+=num;
   };
 
-  public synchronized static void mzo(int num) {
+  public synchronized static void mzo(byte num) {
     zoom+=num;
   };
   
@@ -44,23 +43,22 @@ public class re {
   };
 
   public static double f(double x) {
+    //exp4j library thing to parse the function cause im not tryna write a parser
+
+    //main.getfunc js gets the first argument from main
+    //like if you put: java Main "sin(x)" it reads the sin(x) part
     ExpressionBuilder funky = new ExpressionBuilder(Main.getFunc());
     Expression result = funky.variable("x").build();
     result.setVariable("x",x);
     return result.evaluate();
+    //im the goat at variable names
     };
 
 
   public static void calc() {
-    for (byte y=0;y<boundY;y++) {
-      for (byte x=0;x<boundX;x++) {
-        pos[y][x]=false;
-      }
-    }
-
-    byte zoom = 1;
     double x=0.0-boundX/2;
     double y=Math.round(f(0.0-boundY/2));
+    
     while (x<boundX/2) {
         double slope = (f(x+1)-f(x));
         if (Math.round(f(x)) > y) {
