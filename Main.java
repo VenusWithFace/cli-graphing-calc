@@ -46,8 +46,12 @@ public class Main {
   static String argument = "";
 
   public static void main(String[] args) {
-    //first thing makes background blue and second thing clears screen to actually apply it
-    System.out.print("\033[48:5:17m"+"\033[2J");
+    Window window = new Window();
+    
+
+
+
+    
 
 
     argument = args[0];
@@ -75,7 +79,10 @@ public class Main {
         e.printStackTrace();
     }
         input_listener.start();
-        re.calc();
+        window.init(re.getBoundX(),re.getBoundY(),"Graphing Calculator V1.1");
+        window.moveScreen(2,2);
+        window.updateScreenBuffer(re.calc());
+        window.draw();
   };
 
   public static String getFunc() {

@@ -55,7 +55,7 @@ public class re {
     };
 
 
-  public static void calc() {
+  public static boolean[][] calc() {
     double x=0.0-boundX/2;
     double y=Math.round(f(0.0-boundY/2));
     pos[(int)y+boundY/2][(int)x+boundX/2]=true;
@@ -84,7 +84,7 @@ public class re {
         
         
     }
-    disp.disp(pos, x_offset, y_offset);
+    return pos;
   }
 }
 
