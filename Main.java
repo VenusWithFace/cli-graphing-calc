@@ -12,7 +12,6 @@ public class Main {
         //only works w/o hitting enter cause of the stty thing on line 49
         //not compatible with windows or some linux distros yet afaik
 
-        //todo: learn about regex
         Scanner scanner = new Scanner(System.in);
         while (true) {
         String input = scanner.findWithinHorizon("[wasd]",1);
@@ -47,6 +46,10 @@ public class Main {
   static String argument = "";
 
   public static void main(String[] args) {
+    //first thing makes background blue and second thing clears screen to actually apply it
+    System.out.print("\033[48:5:17m"+"\033[2J");
+
+
     argument = args[0];
     try {
         // -only works for linux

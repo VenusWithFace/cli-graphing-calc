@@ -5,8 +5,8 @@ import net.objecthunter.exp4j.*;
 
 
 public class re {
-  static int boundX = 72;
-  static int boundY = 72;
+  static byte boundX = 72;
+  static byte boundY = 72;
   static int x_offset = boundX/2;
   static int y_offset = boundY/2;
   static double zoom = 0.1;
@@ -26,11 +26,11 @@ public class re {
     zoom+=num;
   };
   
-  public static int getBoundX() {
+  public static byte getBoundX() {
     return boundX;
   };
 
-  public static int getBoundY() {
+  public static byte getBoundY() {
     return boundY;
   };
 
@@ -58,7 +58,7 @@ public class re {
   public static void calc() {
     double x=0.0-boundX/2;
     double y=Math.round(f(0.0-boundY/2));
-    
+    pos[(int)y+boundY/2][(int)x+boundX/2]=true;
     while (x<boundX/2) {
         double slope = (f(x+1)-f(x));
         if (Math.round(f(x)) > y) {
