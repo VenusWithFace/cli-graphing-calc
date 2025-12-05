@@ -1,4 +1,4 @@
-package GraphingCalc;
+package GraphingCalc.main;
 
 //making a window object thing so i dont have as many statics
 public class Window {

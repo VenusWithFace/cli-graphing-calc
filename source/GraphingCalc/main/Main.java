@@ -1,9 +1,9 @@
-package GraphingCalc;
+package GraphingCalc.main;
 import java.io.IOException;
 import java.util.Scanner;
 import GraphingCalc.net.objecthunter.exp4j.*;
-import GraphingCalc.re.*;
-import GraphingCalc.Window.*;
+import GraphingCalc.main.re.*;
+import GraphingCalc.main.Window.*;
 
 public class Main {
  static Thread input_listener = new Thread() {

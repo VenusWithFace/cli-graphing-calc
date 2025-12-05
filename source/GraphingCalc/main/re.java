@@ -1,4 +1,4 @@
-package GraphingCalc;
+package GraphingCalc.main;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.Arrays;
