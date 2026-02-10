@@ -1,0 +1,56 @@
+commit 1d80d377d6f3b5bd07178efdc98605b04b9709e2
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Fri Dec 5 19:58:32 2025 +0000
+
+    last commit maybe
+    
+       /|_/|
+      |o o |_
+       -^-   \ /|
+        ||_|__|/
+      __   __   ____
+     |   \|  | |     \
+     |       | | ^^^ /
+     |  |\   | | __  \
+     |__| \__| |_____/
+    
+     Nathan Baker
+     @venuswithface@gmail.com
+     Dec 5, 2025   2:37PM    Friday
+
+commit b5674025b2411a73f077a66c7e60f85401d86fc8
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Fri Nov 14 18:55:40 2025 +0000
+
+    switching stuff. ignore
+
+commit 01f600b235fba9f157f761a68ed108a97354ab74
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Mon Nov 10 19:35:17 2025 +0000
+
+    replaced display function with window object
+
+commit 53e9274fb99cf053243fe4c18e8c80b58e337d5a
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Mon Nov 10 17:02:24 2025 +0000
+
+    before replacing display function with window object.
+    
+    Nov 10, 2025 || 11:02AM
+
+commit 4d2ba2cc9c4b6e63a33b13aba21c282748c4d2b6
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Fri Nov 7 16:09:14 2025 +0000
+
+    added comments to Main and re files. Cleaned up key listener stuff.
+    
+    i have to clean my display stuff up now </3 im so cooked
+
+commit 90b0483f58fa80345a121a59bc1d7f5c54b39b64
+Author: Nathan Baker <bakernat006@students.garlandisd.net>
+Date:   Fri Nov 7 15:26:57 2025 +0000
+
+    first okay ish version
+    
+    Nov 7, 2025
+    9:27AM Friday

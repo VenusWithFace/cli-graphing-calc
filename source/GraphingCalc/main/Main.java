@@ -4,90 +4,102 @@ import java.util.Scanner;
 import GraphingCalc.net.objecthunter.exp4j.*;
 import GraphingCalc.main.re.*;
 import GraphingCalc.main.Window.*;
-
-public class Main {
- static Thread input_listener = new Thread() {
-    public void run() {
-
-        //the key inputs. 
-        //pretty much just reads the console and clears it when a key is pressed.
-        //only works w/o hitting enter cause of the stty thing on line 49
-        //not compatible with windows or some linux distros yet afaik
-
-        Scanner scanner = new Scanner(System.in);
-        while (true) {
-        String input = scanner.findWithinHorizon("[wasd]",1);
-        if (input != null) {
-            if (input.equals("w")) {
-                //have to cast to byte cause it defaults to int ig
-                re.myo((byte)1);
-            };
-            if (input.equals("a")) {
-                re.mxo((byte)-1);
-            };
-            if (input.equals("s")) {
-                re.myo((byte)-1);
-            };
-            if (input.equals("d")) {
-                re.mxo((byte)1);
-            };
-            System.out.print("\33[2k");
-            //calling calculator function to recalculate stuff after moving camera
-            //calc function calls draw function
-            re.calc();
-            continue;
-        } else {
-            //33[2k clears whole line
-            System.out.print("\33[2k");
-        };
-      }
-    };
-  };
-
-  
-  static String argument = "";
-
-  public static void main(String[] args) {
-    Window window = new Window();
-    
+import java.lang.Object;
+import java.util.Arrays;
+import java.util.regex.*;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+import java.io.File;
 
 
+//todo: write thing to log errors to a file w/ errorstream and bufferedwriter
+//todo: check compat
+//todo switch draw to use System.out.bufferedwriter instead of print for drawing screen
+//remember to do *bufferedwritername*.flush() to print.
 
-    
+public class Main extends Thread {
+    private static String userInput = "";
+    private static Window window = new Window();
 
 
-    argument = args[0];
-    try {
-        // -only works for linux
-        // -todo: add compat for windows, mac, and prolly other linux distros
+    public static void main(String[] args) {
+        try {
+            File errorLog = new File("error.log");
+            FileOutputStream fos = new FileOutputStream(errorLog);
+            PrintStream ps = new PrintStream(fos);
+            System.setErr(ps);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(0);
+        }
+        
 
-        //-stty is the command to change settings
-        //-icanon turns off canonical terminal meaning
-        // you dont gotta hit enter for it to read the console
-        //-iuclc converts uppercase to lowercase
-        //for more do stty --help
-        //gracias stack overflow
 
-        ProcessBuilder pb = new ProcessBuilder("stty","-icanon","-iuclc");
-        pb.inheritIO();
-        pb.redirectErrorStream(true);
-        Process process = pb.start();
-        process.waitFor();
+        //-ctlecho
+        try {
+            ProcessBuilder pb = new ProcessBuilder("stty","-icanon","-iuclc");
+            pb.inheritIO();
+            pb.redirectErrorStream(true);
+            Process process = pb.start();
+            process.waitFor();
 
-    } catch (IOException e) {
-        // Handle exceptions, e.g. print an error message
-        e.printStackTrace();
-    }  catch (InterruptedException e) {
-        e.printStackTrace();
-    }
-        input_listener.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         window.init(re.getBoundX(),re.getBoundY(),"Graphing Calculator V1.1");
         window.moveScreen(2,2);
-        window.updateScreenBuffer(re.calc());
-        window.draw();
-  };
+        Thread keyListener = new Thread(new Main());
 
-  public static String getFunc() {
-    return argument;
-  }
-};
+        window.drawInputSection();
+        window.draw();
+
+        keyListener.start();
+
+
+    }
+
+    public void run() {
+    int height = Math.round(re.getBoundY()/2);
+
+    
+    Pattern pattern = Pattern.compile(".+");
+    Scanner scanner = new Scanner(System.in);
+    while (true) {
+        
+        String input = scanner.findWithinHorizon(pattern,1);
+
+        if (!input.equals(null)) {
+            if (input.equals("\u007F")) {
+                window.delLastChar();
+                window.drawInputSection();
+                continue;
+            }
+
+            window.updateInput(input);
+            window.drawInputSection();
+        // Source - https://stackoverflow.com/a
+        // Posted by Ervin Szilagyi
+        // Retrieved 2026-01-13, License - CC BY-SA 4.0
+            StringBuilder sb = new StringBuilder(window.getCurText());
+            for (int i=0; i < sb.length(); i+=0) {
+                if (Character.isWhitespace(sb.charAt(i))) {
+                    sb.deleteCharAt(i);
+                } else {
+                    i++;
+                }
+            }
+            window.updateScreenBuffer(re.calc(sb.toString()));
+            window.draw();
+            
+            //scanner.close();
+        }
+        //[ qwertyuiopasdfghjklzxcvbnm1234567890!@#$%^&*()-_+=]||(\\n)|\\\\u0008
+        
+        
+
+        //window.updateInput(input);
+    }
+}
+}
